@@ -1,0 +1,53 @@
+version: '3.1'
+
+services:
+  ## Nginx
+  ##
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    image: xdrum/nginx-extras
+    volumes:
+      - ./nginx:/etc/nginx/
+    ports:
+      - "80:80"
+
+  ## RethinkDB
+  ##
+  rethinkdb:
+      image: rethinkdb:latest
+      restart: unless-stopped
+      container_name: rethinkdb
+      command: sh -c "rethinkdb --bind all --initial-password $${PASSWORD} --cache-size $${CACHE_SIZE} -n $${NAME}"
+      volumes:
+        - ./rethink_data:/data
+      ports:
+        - "8080:8080"
+        - "29015:29015"
+        - "28015:28015"
+      env_file:
+        - database.env
+
+  ## Frontend
+  ##
+  frontend:
+    image: node:latest
+    restart: unless-stopped
+    container_name: frontend
+    command: sh -c "yarn && yarn start || tail -f /dev/null"
+    volumes:
+      - ./frontend:/code/frontend
+    working_dir: /code/frontend
+
+  ## Backend
+  ##
+  backend:
+    image: node:latest
+    restart: unless-stopped
+    container_name: backend
+    command: sh -c "yarn && yarn start || tail -f /dev/null"
+    volumes:
+      - ./backend:/code/backend
+    working_dir: /code/backend
+    env_file:
+      - database.env
