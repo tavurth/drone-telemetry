@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styles from './styles.scss';
+import Humidity from './Humidity';
 import Temperature from './Temperature';
 import SocketWrapper from './SocketWrapper';
 

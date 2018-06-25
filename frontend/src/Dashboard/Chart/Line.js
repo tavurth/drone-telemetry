@@ -1,16 +1,19 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
-export default function Line({ data, options }) {
+import { getAxis, getMargins } from './shared.js';
+
+export default function Line({
+    data,
+    axis,
+    options,
+    ...props
+    // prettier-no-wrap
+}) {
     return (
         <ResponsiveLine
             data={data}
-            margin={{
-                top: 50,
-                left: 60,
-                right: 110,
-                bottom: 50,
-            }}
+            margin={getMargins(props)}
             minY="auto"
             stacked={true}
             axisBottom={{
@@ -21,6 +24,7 @@ export default function Line({ data, options }) {
                 orient: 'bottom',
                 legendOffset: 36,
                 legendPosition: 'center',
+                ...getAxis('bottom', axis),
             }}
             axisLeft={{
                 tickSize: 5,
@@ -28,8 +32,9 @@ export default function Line({ data, options }) {
                 tickPadding: 5,
                 tickRotation: 0,
                 legendOffset: -40,
-                legend: 'Temperature',
+                legend: 'no-label',
                 legendPosition: 'center',
+                ...getAxis('left', axis),
             }}
             dotLabel="y"
             colors="set1"

@@ -1,6 +1,8 @@
 import React from 'react';
 import { ResponsiveScatterPlotCanvas } from '@nivo/scatterplot';
 
+import { getAxis, getMargins } from './shared.js';
+
 /**
  * Make sure that an item for a scatter plot has an id, else just use the index.
  *
@@ -23,16 +25,17 @@ function ensureIds(charts) {
     }));
 }
 
-export default function ScatterChart({ data, options }) {
+export default function ScatterChart({
+    data,
+    axis,
+    options,
+    ...props
+    // prettier-no-wrap
+}) {
     return (
         <ResponsiveScatterPlotCanvas
             data={ensureIds(data)}
-            margin={{
-                top: 60,
-                left: 90,
-                right: 140,
-                bottom: 70,
-            }}
+            margin={getMargins(props)}
             colors="d320b"
             symbolSize={4}
             axisBottom={{
@@ -43,6 +46,7 @@ export default function ScatterChart({ data, options }) {
                 legendOffset: 36,
                 orient: 'bottom',
                 legendPosition: 'center',
+                ...getAxis('bottom', axis),
             }}
             axisLeft={{
                 tickSize: 5,
@@ -50,8 +54,9 @@ export default function ScatterChart({ data, options }) {
                 tickPadding: 5,
                 tickRotation: 0,
                 legendOffset: -40,
-                legend: 'temperature',
+                legend: 'no-label',
                 legendPosition: 'center',
+                ...getAxis('left', axis),
             }}
             animate={true}
             motionDamping={15}

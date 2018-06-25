@@ -34,7 +34,7 @@ export default class SocketWrapper extends React.Component {
         this.websocket.on('initial-data', gotInitialData);
     }
 
-    waitForSocket() {
+    waitForSocket = () => {
         return new Promise(res => {
             let interval;
 
@@ -47,15 +47,15 @@ export default class SocketWrapper extends React.Component {
 
             setInterval(check, 200);
         });
-    }
+    };
 
-    getWebsocket() {
+    getWebsocket = () => {
         return this.websocket;
-    }
+    };
 
     render() {
         return injectPropsIntoChildren(this.props, {
-            websocket: this.getWebsocket(),
+            websocket: this.getWebsocket,
             waitForSocket: this.waitForSocket,
         });
     }

@@ -8,9 +8,9 @@ import Scatter from './Scatter';
  * @param {array} values - Array of values from RethinkDB.
  * @returns {object} Object containing configuration settings for the chart.
  */
-export function chartConfig(values) {
+export function chartConfig(id, values) {
     return {
-        id: 'mainChartData',
+        id,
         color: 'hsl(50, 70%, 50%)',
         data: values.map(({ time, value }) => ({ x: time, y: value })),
     };
@@ -20,7 +20,7 @@ export default class CustomChart extends React.Component {
     getData() {
         const { data } = this.props;
 
-        // We expect a configuration object by default
+        // We expect an array of configuration objects by default
         if (Array.isArray(data)) {
             return data.filter(i => data);
         }
