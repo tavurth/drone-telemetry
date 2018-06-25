@@ -1,80 +1,50 @@
 import React from 'react';
-import { ResponsiveLine } from '@nivo/line';
+import Line from './Line';
+import Scatter from './Scatter';
 
 export default class CustomChart extends React.Component {
     getData() {
         const { data } = this.props;
 
+        // We expect a configuration object by default
         if (Array.isArray(data)) {
-            return data;
+            return data.filter(i => data);
         }
 
+        // Else, coerce one
         if (data instanceof Object) {
-            return [data];
+            return [data].filter(i => i.data.length);
         }
 
-        return false;
+        return { data: [] };
+    }
+
+    getChartType() {
+        const { type = 'scatter' } = this.props;
+
+        switch (type) {
+            case 'line':
+                return Line;
+
+            case 'scatter':
+            default:
+                return Scatter;
+        }
+    }
+
+    getOptions() {
+        return {};
+    }
+
+    getChartProps() {
+        const data = this.getData();
+        const options = this.getOptions();
+
+        return { options, data };
     }
 
     render() {
-        const data = this.getData();
-        if (data === false) {
-            return null;
-        }
-
-        return (
-            <ResponsiveLine
-                data={data}
-                margin={{
-                    top: 50,
-                    left: 60,
-                    right: 110,
-                    bottom: 50,
-                }}
-                minY="auto"
-                stacked={true}
-                axisBottom={{
-                    tickSize: 5,
-                    legend: 'Time',
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    orient: 'bottom',
-                    legendOffset: 36,
-                    legendPosition: 'center',
-                }}
-                axisLeft={{
-                    tickSize: 5,
-                    orient: 'left',
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legendOffset: -40,
-                    legend: 'Temperature',
-                    legendPosition: 'center',
-                }}
-                dotLabel="y"
-                colors="set1"
-                dotSize={10}
-                animate={true}
-                enableArea={true}
-                dotBorderWidth={2}
-                motionDamping={15}
-                motionStiffness={90}
-                enableDotLabel={false}
-                dotLabelYOffset={-12}
-                dotBorderColor="#ffffff"
-                dotColor="inherit:darker(0.3)"
-                legends={[
-                    {
-                        itemWidth: 80,
-                        itemHeight: 20,
-                        symbolSize: 12,
-                        translateX: 100,
-                        direction: 'column',
-                        symbolShape: 'circle',
-                        anchor: 'bottom-right',
-                    },
-                ]}
-            />
-        );
+        const ChartType = this.getChartType();
+        return <ChartType {...this.getChartProps()} />;
     }
 }
