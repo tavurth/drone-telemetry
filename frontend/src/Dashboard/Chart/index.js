@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Bar from './Bar';
 import Line from './Line';
 import Scatter from './Scatter';
 
@@ -8,12 +10,18 @@ import Scatter from './Scatter';
  * @param {array} values - Array of values from RethinkDB.
  * @returns {object} Object containing configuration settings for the chart.
  */
-export function chartConfig(id, values) {
+export function chartConfig(id, values = []) {
+
+    const [firstItem = {}] = values;
+    const minTime = firstItem.time;
+
+    const data = values.map(({ id, time, value }) => ({ id, x: time - minTime, y: value || 0 }));
+
     return {
         id,
+	    data,
         color: 'hsl(50, 70%, 50%)',
-        data: values.map(({ time, value }) => ({ x: time, y: value })),
-    };
+     };
 }
 
 export default class CustomChart extends React.Component {
@@ -39,6 +47,9 @@ export default class CustomChart extends React.Component {
         switch (type) {
             case 'line':
                 return Line;
+
+            case 'bar':
+                return Bar;
 
             case 'scatter':
             default:
