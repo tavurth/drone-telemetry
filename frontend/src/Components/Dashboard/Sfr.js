@@ -12,14 +12,8 @@ import styles from './styles.scss';
  * @param {array} sfr - Array of sfr points.
  * @returns {object} Renderable reactDOM object.
  */
-function Sfr({ sfr }) {
-    const axis = {
-        left: {
-            legend: 'sfr',
-        },
-    };
-
-    return <CustomChart data={chartConfig('sfr', sfr)} className={styles.sfr} />;
+class Sfr extends CustomChart {
+    getData = () => chartConfig('sfr', this.props.sfr);
 }
 
 export default connect(getTelemetry('sfr'))(Sfr);

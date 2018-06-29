@@ -12,14 +12,8 @@ import styles from './styles.scss';
  * @param {array} mtof - Array of mtof points.
  * @returns {object} Renderable reactDOM object.
  */
-function Mtof({ mtof }) {
-    const axis = {
-        left: {
-            legend: 'mtof',
-        },
-    };
-
-    return <CustomChart data={chartConfig('mtof', mtof)} className={styles.mtof} />;
+class Mtof extends CustomChart {
+    getData = () => chartConfig('mtof', this.props.mtof);
 }
 
 export default connect(getTelemetry('mtof'))(Mtof);

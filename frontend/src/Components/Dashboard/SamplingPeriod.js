@@ -12,14 +12,8 @@ import styles from './styles.scss';
  * @param {array} samplingPeriod - Array of samplingPeriod points.
  * @returns {object} Renderable reactDOM object.
  */
-function SamplingPeriod({ samplingPeriod }) {
-    const axis = {
-        left: {
-            legend: 'samplingPeriod',
-        },
-    };
-
-    return <CustomChart data={chartConfig('Sampling Period', samplingPeriod)} className={styles.samplingPeriod} />;
+class SamplingPeriod extends CustomChart {
+    getData = () => chartConfig('Sampling Period', this.props.samplingPeriod);
 }
 
 export default connect(getTelemetry('sampling_period', 'samplingPeriod'))(SamplingPeriod);

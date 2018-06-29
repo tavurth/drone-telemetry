@@ -18,8 +18,8 @@ function ensureId(item, idx) {
  *
  * @param {array<object>} data - Array of data selections.
  */
-function ensureIds(charts) {
-    return charts.map(({ data, ...chart }) => ({
+function ensureIds(data) {
+    return data.map(({ data, ...chart }) => ({
         ...chart,
         data: data.map(ensureId),
     }));
