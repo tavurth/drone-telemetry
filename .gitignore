@@ -1,7 +1,7 @@
 rethink_data
 */node_modules
 *.env
-db-password.txt
+db-config.txt
 
 # testing
 /coverage
