@@ -21,7 +21,7 @@ async function sendInitialPackage(socket) {
 }
 
 function socketMessage(socket, message, callback) {
-    console.log(message);
+    console.info('TODO: received client message:', message);
 }
 
 async function changeConfig(socket, newConfig, callback) {
