@@ -6,13 +6,24 @@ with open('./db-config.txt', 'r') as fin:
 
 conn = r.connect(user='admin', password=password, host='localhost')
 
-try:
-    r.db_create('data').run(conn)
-except Exception as e:
-    pass
+def create_db(name):
+    try:
+        r.db_create(name).run(conn)
+        return name
+    except Exception as e:
+        print(e)
+        return name
+        pass
 
-try:
-    r.db('data').table_create('drone_test_1').run(conn)
-except Exception as e:
-    pass
+def create_table(dbName, name):
+    try:
+        return r.db(dbName).table_create(name).run(conn)
+    except Exception as e:
+        print(e)
+        pass
 
+
+db = create_db('telemetry');
+create_table(db, 'data');
+create_table(db, 'users');
+create_table(db, 'config');

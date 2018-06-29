@@ -12,7 +12,7 @@ async function getConnection() {
     );
 }
 
-function onChange(err, change) {
+function everyDataTableChange(err, change) {
     if (err) {
         return console.error(err);
     }
@@ -28,10 +28,10 @@ function onChange(err, change) {
 async function setupListeners() {
     return (await run(
         r
-            .db('data')
-            .table('drone_test_1')
+            .db('telemetry')
+            .table('data')
             .changes({ includeInitial: false })
-    )).each(onChange);
+    )).each(everyDataTableChange);
 }
 
 async function rethinkSetup() {
