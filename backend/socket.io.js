@@ -2,14 +2,13 @@ const r = require('rethinkdb');
 const { run } = require('./connection');
 
 const socketsConnected = new Map();
-
 async function sendInitialPackage(socket) {
     const data = await run(
         r.object(
             r.args(
                 r
-                    .db('data')
-                    .table('drone_test_1')
+                    .db('telemetry')
+                    .table('data')
                     .group('type')
                     .orderBy('time')
                     .ungroup()
@@ -21,11 +20,21 @@ async function sendInitialPackage(socket) {
     socket.emit('initial-data', data);
 }
 
-function socketMessage(socket, ...messages) {
-    console.log(messages);
+function socketMessage(socket, message, callback) {
+    console.log(message);
+}
+
+async function changeConfig(socket, newConfig, callback) {
+    await run(
+        r
+            .db('telemetry')
+            .table('config')
+            .insert(newConfig, { conflict: 'update' })
+    );
 }
 
 const socketFunctions = {
+    changeConfig,
     message: socketMessage,
 };
 
@@ -34,7 +43,7 @@ function socketConnected(socket) {
     socketsConnected.set(socket.id, socket);
 
     for (let key in socketFunctions) {
-        socket.on(key, (...data) => socketFunctions[key](socket, ...data));
+        socket.on(key, (data, callback) => socketFunctions[key](socket, data, callback));
     }
 }
 
