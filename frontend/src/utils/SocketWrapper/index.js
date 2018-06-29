@@ -1,18 +1,6 @@
 import React from 'react';
 import { gotData, gotInitialData } from 'store/actions';
 
-// Remove children from children so we don't double up components
-function getCleanedProps({ children, ...props }) {
-    return props;
-}
-
-// Inject the id list into the component using {this.props.model}
-function injectPropsIntoChildren(props, extra = {}) {
-    return React.Children.map(props.children, child =>
-        React.cloneElement(child, { ...getCleanedProps(props), ...extra })
-    );
-}
-
 class SocketWrapper {
     constructor(props) {
         this.setup();
@@ -30,6 +18,13 @@ class SocketWrapper {
 
         this.websocket.on('data', gotData);
         this.websocket.on('initial-data', gotInitialData);
+
+        // Export this class as if we're a websocket connection
+        for (let key in this.websocket) {
+            if (this.websocket[key] instanceof Function) {
+                this[key] = this.websocket[key].bind(this.websocket);
+            }
+        }
     }
 
     waitForSocket = () => {
