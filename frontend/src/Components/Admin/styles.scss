@@ -1,4 +1,11 @@
+@import "../shared.scss";
 @import "../button.scss";
+
+.admin {
+    &__tab {
+        @include flex-center(column);
+    }
+}
 
 .button__update {
     @include button;
