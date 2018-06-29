@@ -5,9 +5,12 @@ import cc from 'utils/classcat';
 import Tabs from 'components/Tabs';
 import AdminPanel from 'components/Admin';
 
+import Sfr from './Sfr';
 import Bins from './Bins';
-import Humidity from './Humidity';
+import Mtof from './Mtof';
+import Pressure from './Pressure';
 import Temperature from './Temperature';
+import SamplingPeriod from './SamplingPeriod';
 
 import styles from './styles.scss';
 
@@ -24,6 +27,22 @@ class Dashboard extends Tabs {
             {
                 component: Temperature,
                 title: 'Temperature',
+            },
+            {
+                component: Pressure,
+                title: 'Pressure',
+            },
+            {
+                component: SamplingPeriod,
+                title: 'Sampling Period',
+            },
+            {
+                component: Sfr,
+                title: 'Sfr',
+            },
+            {
+                component: Mtof,
+                title: 'Mtof',
             },
             {
                 component: AdminPanel,

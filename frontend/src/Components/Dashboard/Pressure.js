@@ -7,19 +7,19 @@ import { getTelemetry } from 'store/selectors';
 import styles from './styles.scss';
 
 /**
- * Render a chart of humidity.
+ * Render a chart of pressure.
  *
- * @param {array} humidity - Array of humidity points.
+ * @param {array} pressure - Array of pressure points.
  * @returns {object} Renderable reactDOM object.
  */
-function Humidity({ humidity }) {
+function Pressure({ pressure }) {
     const axis = {
         left: {
-            legend: 'humidity',
+            legend: 'pressure',
         },
     };
 
-    return <CustomChart data={chartConfig('humidity', humidity)} className={styles.humidity} />;
+    return <CustomChart data={chartConfig('pressure', pressure)} className={styles.pressure} />;
 }
 
-export default connect(getTelemetry('humidity'))(Humidity);
+export default connect(getTelemetry('pressure'))(Pressure);
