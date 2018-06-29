@@ -64,7 +64,6 @@ export default class ImmutableStateSelector {
             this.__selectors[key] = this.__getDefaultSelector(key, defaultValue);
         }
 
-        console.log(this.__selectors, key);
         return this.__selectors[key];
     };
 }

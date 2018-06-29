@@ -12,7 +12,7 @@ async function setup() {
     await new Promise(res => setTimeout(res, 500));
 
     app.listen(3001, function() {
-        console.log('listening on *:3001');
+        console.info('listening on *:3001');
     });
 }
 

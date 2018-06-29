@@ -39,12 +39,12 @@ const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {
-    console.log(
+    console.info(
         chalk.cyan(`Attempting to bind to HOST environment variable: ${chalk.yellow(chalk.bold(process.env.HOST))}`)
     );
-    console.log(`If this was unintentional, check that you haven't mistakenly set it in your shell.`);
-    console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);
-    console.log();
+    console.info(`If this was unintentional, check that you haven't mistakenly set it in your shell.`);
+    console.info(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);
+    console.info();
 }
 
 // We attempt to use the default port but if it is busy, we offer the user to
@@ -69,12 +69,12 @@ choosePort(HOST, DEFAULT_PORT)
         // Launch WebpackDevServer.
         devServer.listen(port, HOST, err => {
             if (err) {
-                return console.log(err);
+                return console.info(err);
             }
             if (isInteractive) {
                 clearConsole();
             }
-            console.log(chalk.cyan('Starting the development server...\n'));
+            console.info(chalk.cyan('Starting the development server...\n'));
             openBrowser(urls.localUrlForBrowser);
         });
 
@@ -87,7 +87,7 @@ choosePort(HOST, DEFAULT_PORT)
     })
     .catch(err => {
         if (err && err.message) {
-            console.log(err.message);
+            console.info(err.message);
         }
         process.exit(1);
     });
