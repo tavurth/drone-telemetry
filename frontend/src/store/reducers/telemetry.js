@@ -1,19 +1,21 @@
+import Immutable from 'immutable';
+
 import types from '../types';
 
-const initialState = {};
+const initialState = Immutable.Map();
 
 export default function reducer(state = initialState, action = {}) {
     const newData = action.payload;
 
     switch (action.type) {
         case types.INITIAL_DATA:
-            return { ...state, ...newData };
+            return Immutable.fromJS(newData);
 
         case types.ADD_DATA:
             const { type } = newData;
 
-            const currentData = state[type] || [];
-            return { ...state, [type]: currentData.concat(newData) };
+            const currentData = state.get(type) || Immutable.List();
+            return state.set(type, currentData.concat(newData));
     }
 
     return state;

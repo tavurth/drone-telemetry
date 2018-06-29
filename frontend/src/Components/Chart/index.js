@@ -27,9 +27,15 @@ export function chartConfig(id, values = []) {
     };
 }
 
-export default class CustomChart extends React.Component {
-    getData() {
-        const { data } = this.props;
+export default class CustomChart extends React.PureComponent {
+    // These functions should be overridden in your extension class
+    getData = () => [];
+    getOptions = () => ({});
+    getClassName = () => '';
+    getChartType = () => 'scatter';
+
+    __getData() {
+        const data = this.getData();
 
         // We expect an array of configuration objects by default
         if (Array.isArray(data)) {
@@ -44,8 +50,12 @@ export default class CustomChart extends React.Component {
         return { data: [] };
     }
 
-    getChartType() {
-        const { type = 'scatter' } = this.props;
+    __getOptions() {
+        return this.getOptions();
+    }
+
+    __getChartType() {
+        const type = this.getChartType();
 
         switch (type) {
             case 'line':
@@ -60,23 +70,19 @@ export default class CustomChart extends React.Component {
         }
     }
 
-    getOptions() {
-        return {};
-    }
-
-    getChartProps() {
-        const data = this.getData();
-        const options = this.getOptions();
+    __getChartProps() {
+        const data = this.__getData();
+        const options = this.__getOptions();
 
         return { options, data };
     }
 
     render() {
-        const ChartType = this.getChartType();
-        const { className } = this.props;
+        const ChartType = this.__getChartType();
+
         return (
-            <div className={cc(styles.chart__main, className)} width="100%" height="100%" data-type="Chart">
-                <ChartType {...this.getChartProps()} />
+            <div className={cc(styles.chart__main, this.getClassName())} width="100%" height="100%" data-type="Chart">
+                <ChartType {...this.__getChartProps()} />
             </div>
         );
     }

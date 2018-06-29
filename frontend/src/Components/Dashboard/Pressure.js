@@ -12,14 +12,8 @@ import styles from './styles.scss';
  * @param {array} pressure - Array of pressure points.
  * @returns {object} Renderable reactDOM object.
  */
-function Pressure({ pressure }) {
-    const axis = {
-        left: {
-            legend: 'pressure',
-        },
-    };
-
-    return <CustomChart data={chartConfig('pressure', pressure)} className={styles.pressure} />;
+class Pressure extends CustomChart {
+    getData = () => chartConfig('pressure', this.props.pressure);
 }
 
 export default connect(getTelemetry('pressure'))(Pressure);
