@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getTelemetry } from './selectors';
-import CustomChart from './Chart';
+import CustomChart from 'components/Chart';
+import { getTelemetry } from 'store/selectors';
 
 import styles from './styles.scss';
 
@@ -14,12 +14,11 @@ import styles from './styles.scss';
  * @returns {array} An array of generated points for a scatter chart.
  */
 function chartConfig(values = []) {
-
     // Calculate the minimum time so that the chart is not too wide
     const [firstItem = {}] = values;
     const minTime = firstItem.time;
 
-    const sortedBins = {}
+    const sortedBins = {};
 
     // SortedBins = { 'Bin 1' { id, color, data }, 'Bin 2': ... }
     values.forEach((item, idx) => {
@@ -33,7 +32,7 @@ function chartConfig(values = []) {
 
         // Create a new value and add it to the bin
         // sortedBins['Bin 1'] = { id: 'Bin 1', color: '...', data: [{ x, y }, ...] }
-        sortedBins[name].data.push({ x: time - minTime, y: value, id: idx })
+        sortedBins[name].data.push({ x: time - minTime, y: value, id: idx });
     });
 
     // [{ id, color, data }, ...]
@@ -54,11 +53,7 @@ function Bins({ bin }) {
         },
     };
 
-    return (
-        <div className={styles.bins} width="100%" height="100%">
-            <CustomChart type='scatter' data={chartConfig(bin)} axis={axis} width="100%" height="100%"/>
-        </div>
-    );
+    return <CustomChart type="scatter" data={chartConfig(bin)} axis={axis} className={styles.bins} />;
 }
 
 export default connect(getTelemetry('bin'))(Bins);

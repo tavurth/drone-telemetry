@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import CustomChart, { chartConfig } from 'components/Chart';
+import { getTelemetry } from 'store/selectors';
+
 import styles from './styles.scss';
-import { getTelemetry } from './selectors';
-import CustomChart, { chartConfig } from './Chart';
 
 /**
  * Render a chart of humidity.
@@ -18,11 +19,7 @@ function Humidity({ humidity }) {
         },
     };
 
-    return (
-        <div className={styles.humidity} width="100%" height="100%" data-name="Humidity">
-            <CustomChart width="100%" height="100%" data={chartConfig('humidity', humidity)} />
-        </div>
-    );
+    return <CustomChart data={chartConfig('humidity', humidity)} className={styles.humidity} />;
 }
 
 export default connect(getTelemetry('humidity'))(Humidity);

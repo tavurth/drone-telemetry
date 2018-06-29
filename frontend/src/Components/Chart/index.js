@@ -1,8 +1,12 @@
 import React from 'react';
 
+import cc from 'utils/classcat';
+
 import Bar from './Bar';
 import Line from './Line';
 import Scatter from './Scatter';
+
+import styles from './styles.scss';
 
 /**
  * Return a configuration object for the chart.
@@ -11,7 +15,6 @@ import Scatter from './Scatter';
  * @returns {object} Object containing configuration settings for the chart.
  */
 export function chartConfig(id, values = []) {
-
     const [firstItem = {}] = values;
     const minTime = firstItem.time;
 
@@ -19,9 +22,9 @@ export function chartConfig(id, values = []) {
 
     return {
         id,
-	    data,
+        data,
         color: 'hsl(50, 70%, 50%)',
-     };
+    };
 }
 
 export default class CustomChart extends React.Component {
@@ -70,6 +73,11 @@ export default class CustomChart extends React.Component {
 
     render() {
         const ChartType = this.getChartType();
-        return <ChartType {...this.getChartProps()} />;
+        const { className } = this.props;
+        return (
+            <div className={cc(styles.chart__main, className)} width="100%" height="100%" data-type="Chart">
+                <ChartType {...this.getChartProps()} />
+            </div>
+        );
     }
 }

@@ -10,7 +10,6 @@ export default function Line({
     ...props
     // prettier-no-wrap
 }) {
-
     return (
         <ResponsiveLine
             data={data}

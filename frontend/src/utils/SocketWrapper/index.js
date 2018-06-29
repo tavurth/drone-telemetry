@@ -1,5 +1,5 @@
 import React from 'react';
-import { gotData, gotInitialData } from '../../redux/actions';
+import { gotData, gotInitialData } from 'store/actions';
 
 // Remove children from children so we don't double up components
 function getCleanedProps({ children, ...props }) {
@@ -13,10 +13,8 @@ function injectPropsIntoChildren(props, extra = {}) {
     );
 }
 
-export default class SocketWrapper extends React.Component {
+class SocketWrapper {
     constructor(props) {
-        super(props);
-
         this.setup();
     }
 
@@ -52,11 +50,6 @@ export default class SocketWrapper extends React.Component {
     getWebsocket = () => {
         return this.websocket;
     };
-
-    render() {
-        return injectPropsIntoChildren(this.props, {
-            websocket: this.getWebsocket,
-            waitForSocket: this.waitForSocket,
-        });
-    }
 }
+
+export default new SocketWrapper();

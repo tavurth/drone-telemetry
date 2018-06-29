@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { getTelemetry } from 'store/selectors';
+import CustomChart, { chartConfig } from 'components/Chart';
+
 import styles from './styles.scss';
-import { getTelemetry } from './selectors';
-import CustomChart, { chartConfig } from './Chart';
 
 /**
  * Render a chart of temperature.
@@ -18,11 +19,7 @@ function Temperature({ temperature }) {
         },
     };
 
-    return (
-        <div className={styles.temperature} width="100%" height="100%" data-name="Temperature">
-            <CustomChart width="100%" height="100%" data={chartConfig('temperature', temperature)} axis={axis} />
-        </div>
-    );
+    return <CustomChart data={chartConfig('temperature', temperature)} axis={axis} className={styles.temperature} />;
 }
 
 export default connect(getTelemetry('temperature'))(Temperature);
