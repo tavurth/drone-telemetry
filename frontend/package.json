@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/bar": "^0.42.1",
     "@nivo/line": "^0.42.1",
     "@nivo/scatterplot": "^0.42.1",
     "autoprefixer": "7.1.6",
