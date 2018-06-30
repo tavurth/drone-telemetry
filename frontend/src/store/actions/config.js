@@ -5,8 +5,8 @@ import { objectFromGroups } from './helpers';
 
 export function gotConfig(newConfig = []) {
     dispatch({
+        payload: newConfig,
         type: types.GOT_CONFIG,
-        payload: { [newConfig.id]: newConfig },
     });
 }
 

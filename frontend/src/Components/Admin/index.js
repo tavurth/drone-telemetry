@@ -1,5 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import Input from 'react-toolbox/lib/input';
 import Switch from 'react-toolbox/lib/switch';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
@@ -16,7 +17,7 @@ class AdminPanel extends Tabs {
     updateConfig(nextProps, force = false) {
         const { config } = nextProps;
 
-        if (config === this.props.config && !force) {
+        if (isEqual(config, this.props.config) && !force) {
             return;
         }
 
