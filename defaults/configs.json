@@ -1,0 +1,21 @@
+[{
+    "config": {
+        "active": {
+            "label": "Collect",
+            "type": "toggle",
+            "value": false
+        },
+        "sampleName": {
+            "label": "Sample name",
+            "type": "text",
+            "value": "My first sample"
+        },
+        "tableName": {
+            "label": "Table name",
+            "disabled": true,
+            "type": "text",
+            "value": "data"
+        }
+    },
+    "id": "drone-configuration"
+}]

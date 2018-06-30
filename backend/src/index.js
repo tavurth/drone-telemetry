@@ -1,6 +1,9 @@
-const { expressSetup } = require('./express');
-const { socketSetup } = require('./socket.io');
-const { rethinkSetup } = require('./rethinkdb');
+process.env.NODE_PATH = __dirname;
+require('module').Module._initPaths(); // eslint-disable-line no-underscore-dangle
+
+const { expressSetup } = require('driver/express');
+const { socketSetup } = require('driver/socket.io');
+const { rethinkSetup } = require('driver/rethinkdb');
 
 async function setup() {
     const app = expressSetup();

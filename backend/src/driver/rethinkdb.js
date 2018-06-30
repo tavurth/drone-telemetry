@@ -6,13 +6,14 @@ async function getConnection() {
     set(
         await r.connect({
             user: 'admin',
+            db: 'telemetry',
             host: 'rethinkdb',
             password: process.env.PASSWORD,
         })
     );
 }
 
-function everyDataTableChange(err, change) {
+const emitEveryTableChange = type => (err, change) => {
     if (err) {
         return console.error(err);
     }
@@ -22,21 +23,26 @@ function everyDataTableChange(err, change) {
         return;
     }
 
-    emit('data', new_val);
-}
+    emit(type, new_val);
+};
 
-async function setupListeners() {
+async function setupListener(table, options = {}) {
     return (await run(
         r
             .db('telemetry')
-            .table('data')
-            .changes({ includeInitial: false })
-    )).each(everyDataTableChange);
+            .table(table)
+            .changes(options)
+    )).each(emitEveryTableChange(table));
+}
+
+function setupListeners() {
+    setupListener('data');
+    setupListener('config');
 }
 
 async function rethinkSetup() {
     await getConnection();
-    setupListeners();
+    await setupListeners();
 }
 
 module.exports = {

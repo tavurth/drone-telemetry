@@ -79,4 +79,4 @@ class Bins extends CustomChart {
     getData = () => chartConfig(this.props.bins);
 }
 
-export default connect(getTelemetry('bin', 'bins'))(Bins);
+export default connect(getTelemetry('bin', { as: 'bins' }))(Bins);
