@@ -6,7 +6,7 @@
     "author": "will.whitty.arbeit@gmail.com",
     "license": "MIT",
     "scripts": {
-        "start": "nodemon index.js"
+        "start": "nodemon src/index.js"
     },
     "dependencies": {
         "express": "^4.16.3",

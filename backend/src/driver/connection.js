@@ -1,3 +1,5 @@
+const r = require('rethinkdb');
+
 let CONNECTION = false;
 
 function get(connection) {
@@ -14,6 +16,7 @@ function run(query) {
 }
 
 module.exports = {
+    r,
     get,
     set,
     run,
