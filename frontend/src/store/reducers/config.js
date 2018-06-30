@@ -9,7 +9,8 @@ export default function reducer(state = initialState, action = {}) {
 
     switch (action.type) {
         case types.GOT_CONFIG:
-            return Immutable.fromJS(newData);
+            const { id } = newData;
+            return state.set(id, newData);
 
         case types.INITIAL_CONFIGS:
             return Immutable.fromJS(newData);
