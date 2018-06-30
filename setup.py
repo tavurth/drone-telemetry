@@ -32,5 +32,5 @@ with open('./defaults/configs.json', 'r') as fin:
     r\
         .db('telemetry')\
         .table('config')\
-        .insert(json.loads(fin.read()), conflict='update')\
+        .insert(json.loads(fin.read()), conflict='replace')\
         .run(conn)
