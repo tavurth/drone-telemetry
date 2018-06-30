@@ -20,11 +20,11 @@ async function sendInitialPackage(socket) {
     socket.emit('initial-data', data);
 }
 
-function socketMessage(socket, message, callback) {
+function socketMessage(message, callback) {
     console.info('TODO: received client message:', message);
 }
 
-async function changeConfig(socket, newConfig, callback) {
+async function changeConfig(newConfig, callback) {
     await run(
         r
             .db('telemetry')
@@ -43,7 +43,7 @@ function socketConnected(socket) {
     socketsConnected.set(socket.id, socket);
 
     for (let key in socketFunctions) {
-        socket.on(key, (data, callback) => socketFunctions[key](socket, data, callback));
+        socket.on(key, socketFunctions[key]);
     }
 }
 
