@@ -8,7 +8,7 @@
         "sampleName": {
             "label": "Sample name",
             "type": "text",
-            "value": "first"
+            "value": "My first sample"
         },
         "tableName": {
             "label": "Table name",
