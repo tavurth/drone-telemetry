@@ -1,5 +1,7 @@
 import React from 'react';
 import Input from 'react-toolbox/lib/input';
+import Switch from 'react-toolbox/lib/switch';
+
 import { connect } from 'react-redux';
 
 import Tabs from 'components/Tabs';
@@ -34,7 +36,7 @@ class AdminPanel extends Tabs {
         });
     };
 
-    updateBlockValue(key, value) {
+    updateBlockValue(key, valueKey, value) {
         const { state } = this;
         const { config } = state;
         const currentValue = config[key];
@@ -45,7 +47,7 @@ class AdminPanel extends Tabs {
                 ...config,
                 [key]: {
                     ...currentValue,
-                    value,
+                    [valueKey]: value,
                 },
             },
         });
@@ -56,7 +58,10 @@ class AdminPanel extends Tabs {
 
         switch (type) {
             case 'text':
-                return <Input {...rest} key={key} onChange={this.updateBlockValue.bind(this, key)} />;
+                return <Input {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'value')} />;
+
+            case 'toggle':
+                return <Switch {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'checked')} />;
         }
     };
 

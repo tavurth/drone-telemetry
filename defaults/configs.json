@@ -1,9 +1,9 @@
 [{
     "config": {
         "active": {
-            "label": "Collect",
             "type": "toggle",
-            "value": false
+            "checked": false,
+            "label": "Collect data"
         },
         "sampleName": {
             "label": "Sample name",
