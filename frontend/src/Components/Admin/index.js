@@ -1,6 +1,8 @@
 import React from 'react';
+import get from 'lodash/get';
 import Input from 'react-toolbox/lib/input';
 import Switch from 'react-toolbox/lib/switch';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 import { connect } from 'react-redux';
 
@@ -41,7 +43,7 @@ class AdminPanel extends Tabs {
         const { config } = state;
         const currentValue = config[key];
 
-        this.setState({
+        const newState = {
             ...this.state,
             config: {
                 ...config,
@@ -50,11 +52,21 @@ class AdminPanel extends Tabs {
                     [valueKey]: value,
                 },
             },
+        };
+
+        this.setState(newState, afterLoadingState => {
+            if (valueKey === 'checked') {
+                this.sendConfig();
+            }
         });
     }
 
-    getConfigBlock = (config, key) => {
-        const { type, ...rest } = config;
+    getConfigBlock = (fullConfig, config, key) => {
+        const { type, showIf, ...rest } = config;
+
+        if (showIf !== undefined && get(fullConfig, showIf, false) === false) {
+            return null;
+        }
 
         switch (type) {
             case 'text':
@@ -62,12 +74,15 @@ class AdminPanel extends Tabs {
 
             case 'toggle':
                 return <Switch {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'checked')} />;
+
+            case 'progress':
+                return <ProgressBar {...rest} className={styles.progress} key={key} />;
         }
     };
 
     getConfigBlocks() {
         const { config } = this.state;
-        return Object.keys(config).map(key => this.getConfigBlock(config[key], key));
+        return Object.keys(config).map(key => this.getConfigBlock(config, config[key], key));
     }
 
     getControlsTab = () => {

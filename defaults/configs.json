@@ -5,6 +5,11 @@
             "checked": false,
             "label": "Collect data"
         },
+        "gathering": {
+            "type": "progress",
+            "label": "Collecing...",
+            "showIf": "active.checked"
+        },
         "sampleName": {
             "label": "Sample name",
             "type": "text",

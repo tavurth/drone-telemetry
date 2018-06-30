@@ -10,3 +10,8 @@
 .button__update {
     @include button;
 }
+
+.progress {
+    width: 20%;
+    margin-bottom: 2em;
+}
