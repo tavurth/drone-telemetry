@@ -1,3 +1,4 @@
+import json
 import rethinkdb as r
 
 password = False
@@ -27,14 +28,9 @@ create_table(db, 'users');
 create_table(db, 'config');
 
 ## Configuration for the administration page
-r.db('telemetry').table('config')\
-  .insert({
-    "id": 'drone-configuration',
-    "config": {
-      "active": { "value": False, "type": 'toggle' },
-      "sampleName": { "value": 'first', "type": 'text' },
-      "table_name": { "value": 'data', "type": 'text', "disabled": True },
-    }
-  }, conflict='update'
-)\
-  .run(conn)
+with open('./defaults/configs.json', 'r') as fin:
+    r\
+        .db('telemetry')\
+        .table('config')\
+        .insert(json.loads(fin.read()), conflict='update')\
+        .run(conn)
