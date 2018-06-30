@@ -73,7 +73,6 @@ class AdminPanel extends Tabs {
     getControlsTab = () => {
         return (
             <div className={styles.admin__tab}>
-                <span>Maybe drone controls here</span>
                 {this.getConfigBlocks()}
                 <a onClick={this.sendConfig} className={styles.button__update}>
                     Update drone settings
