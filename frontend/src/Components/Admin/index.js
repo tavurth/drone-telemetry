@@ -8,7 +8,7 @@ import styles from './styles.scss';
 class AdminPanel extends Tabs {
     sendConfig = () => {
         websocket.emit('changeConfig', {
-            data: 'test-1',
+            data: Math.random() * 1000,
             id: 'drone-configuration',
         });
     };

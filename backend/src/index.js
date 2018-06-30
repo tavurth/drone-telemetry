@@ -1,6 +1,4 @@
 process.env.NODE_PATH = __dirname;
-
-console.log(__dirname);
 require('module').Module._initPaths(); // eslint-disable-line no-underscore-dangle
 
 const { expressSetup } = require('driver/express');
