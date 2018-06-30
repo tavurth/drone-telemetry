@@ -5,6 +5,7 @@ function socketMessage(message, callback) {
 }
 
 async function changeConfig(newConfig, callback) {
+    console.log(newConfig, callback);
     await run(
         r
             .db('telemetry')
