@@ -1,5 +1,4 @@
 import React from 'react';
-import { gotData, gotInitialData } from 'store/actions';
 
 class SocketWrapper {
     constructor(props) {
@@ -9,15 +8,9 @@ class SocketWrapper {
     setup() {
         const host = `ws://${window.location.host}`;
 
-        this.websocket = io(host, { transports: ['websocket'] });
-
-        this.websocket.on('connect_error', console.error);
-        this.websocket.on('connect_timeout', console.error);
-        this.websocket.on('reconnect_error', console.error);
-        this.websocket.on('reconnect_timeout', console.error);
-
-        this.websocket.on('data', gotData);
-        this.websocket.on('initial-data', gotInitialData);
+        this.websocket = io(host, {
+            transports: ['polling', 'websocket'],
+        });
 
         // Export this class as if we're a websocket connection
         for (let key in this.websocket) {
@@ -25,6 +18,15 @@ class SocketWrapper {
                 this[key] = this.websocket[key].bind(this.websocket);
             }
         }
+
+        this.setupFunctions();
+    }
+
+    setupFunctions() {
+        this.on('connect_error', console.error);
+        this.on('connect_timeout', console.error);
+        this.on('reconnect_error', console.error);
+        this.on('reconnect_timeout', console.error);
     }
 
     waitForSocket = () => {
@@ -34,11 +36,11 @@ class SocketWrapper {
             const check = () => {
                 if (this.websocket.connected) {
                     clearInterval(interval);
-                    return res(this.websocket);
+                    return res(this);
                 }
             };
 
-            setInterval(check, 200);
+            interval = setInterval(check, 200);
         });
     };
 

@@ -44,7 +44,9 @@ function emit(...args) {
 }
 
 function socketSetup(http) {
-    const io = require('socket.io')(http);
+    const io = require('socket.io')(http, {
+        transports: ['polling', 'websocket'],
+    });
 
     io.on('connection', mainSocketMap.add);
     io.on('disconnect', mainSocketMap.rem);

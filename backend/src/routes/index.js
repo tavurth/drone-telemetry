@@ -1,11 +1,16 @@
 const { r, run } = require('driver/connection');
 
-function socketMessage(message, callback) {
-    console.info('TODO: received client message:', message);
-}
+/**
+ * Client sent us a message.
+ * @param {string} message - String message from the client.
+ */
+function socketMessage(message) {}
 
-async function changeConfig(newConfig, callback) {
-    console.log(newConfig, callback);
+/**
+ * Client asked to update the config for the drone.
+ * @param {object} newConfig - The new configuration to be inserted.
+ */
+async function changeConfig(newConfig) {
     await run(
         r
             .db('telemetry')
@@ -14,8 +19,13 @@ async function changeConfig(newConfig, callback) {
     );
 }
 
-async function sendInitialPackage(socket) {
-    const data = await run(
+/**
+ * Retrieve the initial set of data from the database.
+ *
+ * @returns {object} { 'temperature': [], 'humidity': {} }.
+ */
+function getInitialPackage() {
+    return run(
         r.object(
             r.args(
                 r
@@ -28,14 +38,20 @@ async function sendInitialPackage(socket) {
             )
         )
     );
+}
 
-    socket.emit('initial-data', data);
+/**
+ * Client asks for the initial data set.
+ * @param {function} callback - Call to send data back to client.
+ */
+async function getInitialData(callback) {
+    callback(await getInitialPackage());
 }
 
 const routes = {
     changeConfig,
     message: socketMessage,
-    initial: sendInitialPackage,
+    'data:initial': getInitialData,
 };
 
 module.exports = routes;

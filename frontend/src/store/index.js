@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 
+import './actions';
 import telemetry from './reducers';
 import { setStore } from './store';
 
