@@ -1,30 +1,87 @@
 import React from 'react';
+import Input from 'react-toolbox/lib/input';
+import { connect } from 'react-redux';
 
 import Tabs from 'components/Tabs';
 import websocket from 'utils/SocketWrapper';
+import { getConfig } from 'store/selectors';
 
 import styles from './styles.scss';
 
 class AdminPanel extends Tabs {
+    updateConfig(nextProps, force = false) {
+        const { config } = nextProps;
+
+        if (config === this.props.config && !force) {
+            return;
+        }
+
+        this.setState({ config });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.updateConfig(nextProps);
+    }
+    componentWillMount() {
+        this.updateConfig(this.props, true);
+    }
+
     sendConfig = () => {
+        const { config } = this.state;
         websocket.emit('changeConfig', {
-            data: Math.random() * 1000,
+            config,
             id: 'drone-configuration',
         });
+    };
+
+    updateBlockValue(key, value) {
+        const { state } = this;
+        const { config } = state;
+        const currentValue = config[key];
+
+        this.setState({
+            ...this.state,
+            config: {
+                ...config,
+                [key]: {
+                    ...currentValue,
+                    value,
+                },
+            },
+        });
+    }
+
+    getConfigBlock = (config, key) => {
+        const { type, ...rest } = config;
+
+        switch (type) {
+            case 'text':
+                return <Input {...rest} key={key} onChange={this.updateBlockValue.bind(this, key)} />;
+        }
+    };
+
+    getConfigBlocks() {
+        const { config } = this.state;
+        return Object.keys(config).map(key => this.getConfigBlock(config[key], key));
+    }
+
+    getControlsTab = () => {
+        return (
+            <div className={styles.admin__tab}>
+                <span>Maybe drone controls here</span>
+                {this.getConfigBlocks()}
+                <a onClick={this.sendConfig} className={styles.button__update}>
+                    Update drone settings
+                </a>
+            </div>
+        );
     };
 
     getTabsConfig() {
         return [
             {
                 title: 'Controls',
-                component: () => (
-                    <div className={styles.admin__tab}>
-                        <span>Maybe drone controls here</span>
-                        <a onClick={this.sendConfig} className={styles.button__update}>
-                            Update drone settings
-                        </a>
-                    </div>
-                ),
+                component: this.getControlsTab,
             },
             {
                 title: 'Table setup',
@@ -37,5 +94,7 @@ class AdminPanel extends Tabs {
         ];
     }
 }
+
+AdminPanel = connect(getConfig('drone-configuration.config', { as: 'config' }))(AdminPanel);
 
 export default AdminPanel;

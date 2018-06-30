@@ -16,4 +16,4 @@ class SamplingPeriod extends CustomChart {
     getData = () => chartConfig('Sampling Period', this.props.samplingPeriod);
 }
 
-export default connect(getTelemetry('sampling_period', 'samplingPeriod'))(SamplingPeriod);
+export default connect(getTelemetry('sampling_period', { as: 'samplingPeriod' }))(SamplingPeriod);

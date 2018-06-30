@@ -6,6 +6,7 @@ async function getConnection() {
     set(
         await r.connect({
             user: 'admin',
+            db: 'telemetry',
             host: 'rethinkdb',
             password: process.env.PASSWORD,
         })

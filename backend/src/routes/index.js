@@ -11,11 +11,21 @@ function socketMessage(message) {}
  * @param {object} newConfig - The new configuration to be inserted.
  */
 async function changeConfig(newConfig) {
+    if (newConfig.id) {
+        await run(
+            r
+                .db('telemetry')
+                .table('config')
+                .get(newConfig.id)
+                .replace(newConfig)
+        );
+    }
+
     await run(
         r
             .db('telemetry')
             .table('config')
-            .insert(newConfig, { conflict: 'update' })
+            .insert(newConfig)
     );
 }
 
@@ -24,19 +34,27 @@ async function changeConfig(newConfig) {
  *
  * @returns {object} { 'temperature': [], 'humidity': {} }.
  */
-function getInitialPackage() {
+function getInitialDataSet() {
     return run(
-        r.object(
-            r.args(
-                r
-                    .db('telemetry')
-                    .table('data')
-                    .group('type')
-                    .orderBy('time')
-                    .ungroup()
-                    .concatMap(i => [i('group'), i('reduction')])
-            )
-        )
+        r
+            .table('data')
+            .group('type')
+            .orderBy('time')
+            .ungroup()
+    );
+}
+
+/**
+ * Returns all initial configs as an object.
+ * @returns {object} { configId: config }.
+ */
+function getInitialConfigSet() {
+    return run(
+        r
+            .table('config')
+            .group('id')
+            .nth(0)
+            .ungroup()
     );
 }
 
@@ -45,13 +63,22 @@ function getInitialPackage() {
  * @param {function} callback - Call to send data back to client.
  */
 async function getInitialData(callback) {
-    callback(await getInitialPackage());
+    callback(await getInitialDataSet());
+}
+
+/**
+ * Client asks for the initial config.
+ * @param {function} callback - Call to send data back to client.
+ */
+async function getInitialConfig(callback) {
+    callback(await getInitialConfigSet());
 }
 
 const routes = {
     changeConfig,
     message: socketMessage,
     'data:initial': getInitialData,
+    'config:initial': getInitialConfig,
 };
 
 module.exports = routes;

@@ -6,7 +6,7 @@ import styles from './styles.scss';
 /**
  * Main tabs component.
  */
-class Tabs extends React.Component {
+class Tabs extends React.PureComponent {
     state = { tabSelected: 0 };
 
     getTabsConfig() {
