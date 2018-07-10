@@ -2,7 +2,9 @@ import Immutable from 'immutable';
 
 import types from 'store/types';
 
-const initialState = Immutable.Map();
+const initialState = Immutable.fromJS({
+    'web-config': { cacheSize: 8, initialSize: 500 },
+});
 
 export default function reducer(state = initialState, action = {}) {
     const newData = action.payload;
@@ -13,7 +15,11 @@ export default function reducer(state = initialState, action = {}) {
             return state.mergeDeep({ [id]: newData });
 
         case types.INITIAL_CONFIGS:
-            return Immutable.fromJS(newData);
+            return state.mergeDeep(Immutable.fromJS(newData));
+
+        case types.CACHE_SIZE:
+            const { normal } = action;
+            return state.setIn(['web-config', normal], action.payload);
     }
 
     return state;

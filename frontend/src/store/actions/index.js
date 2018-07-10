@@ -1,7 +1,7 @@
 import Cookie from 'js-cookie';
 import SocketWrapper from 'utils/SocketWrapper';
 
-import { gotData, gotInitialData } from './data';
+import { gotData, gotInitialData, getInitialData } from './data';
 import { gotConfig, gotInitialConfigs } from './config';
 
 export async function getInitial() {
@@ -11,7 +11,7 @@ export async function getInitial() {
     ws.on('config', gotConfig);
 
     // Asking for our initial data
-    ws.emit('data:initial', gotInitialData);
+    getInitialData();
     ws.emit('config:initial', gotInitialConfigs);
 }
 

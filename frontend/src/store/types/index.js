@@ -1,8 +1,10 @@
-export const ADD_DATA = 'data/NEW_ITEM';
-export const INITIAL_DATA = 'data/LOADED';
+export const ADD_DATA = 'data/ADD_DATA';
+export const INITIAL_DATA = 'data/INITIAL_DATA';
 
-export const GOT_CONFIG = 'config/UPDATE';
-export const INITIAL_CONFIGS = 'config/LOADED';
+export const GOT_CONFIG = 'config/GOT_CONFIGa';
+export const INITIAL_CONFIGS = 'config/INITIAL_CONFIGS';
+
+export const CACHE_SIZE = 'config/NEW_CACHE_SIZE';
 
 export default {
     ADD_DATA,
@@ -10,4 +12,6 @@ export default {
 
     GOT_CONFIG,
     INITIAL_CONFIGS,
+
+    CACHE_SIZE,
 };

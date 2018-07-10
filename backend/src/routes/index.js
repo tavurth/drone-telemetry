@@ -34,13 +34,15 @@ async function changeConfig(newConfig) {
  *
  * @returns {object} { 'temperature': [], 'humidity': {} }.
  */
-function getInitialDataSet() {
+function getInitialDataSet(count = 500) {
+    count = count || 500;
+
     return run(
         r
             .table('data')
             .orderBy({ index: r.desc('time') })
-            .limit(8000)
             .group('type')
+            .limit(count)
             .orderBy(r.asc('time'))
             .ungroup()
     );
@@ -64,8 +66,8 @@ function getInitialConfigSet() {
  * Client asks for the initial data set.
  * @param {function} callback - Call to send data back to client.
  */
-async function getInitialData(callback) {
-    callback(await getInitialDataSet());
+async function getInitialData(count, callback) {
+    callback(await getInitialDataSet(count));
 }
 
 /**

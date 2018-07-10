@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import Input from 'react-toolbox/lib/input';
 import Switch from 'react-toolbox/lib/switch';
+import Slider from 'react-toolbox/lib/slider';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ import { connect } from 'react-redux';
 import Tabs from 'components/Tabs';
 import websocket from 'utils/SocketWrapper';
 import { getConfig } from 'store/selectors';
+import { changeCacheSize, changeInitialSize } from 'store/actions/config';
 
 import styles from './styles.scss';
 
@@ -74,7 +76,7 @@ class AdminPanel extends Tabs {
                 return <Input {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'value')} />;
 
             case 'toggle':
-                return <Switch {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'checked')} />;
+                return <Switch {...rest} key={key} onChange={this.updateBlockValue.bind(this, key, 'Slider')} />;
 
             case 'progress':
                 return <ProgressBar {...rest} className={styles.progress} key={key} />;
@@ -87,14 +89,42 @@ class AdminPanel extends Tabs {
     }
 
     getControlsTab = () => {
+        const { config } = this.state;
+        return Object.keys(config).map(key => this.getConfigBlock(config, config[key], key));
+    };
+
+    getTableConfigBlocks() {
+        const { webConfig } = this.props;
         return (
             <div className={styles.admin__tab}>
-                {this.getConfigBlocks()}
-                <a onClick={this.sendConfig} className={styles.button__update}>
-                    Update drone settings
-                </a>
+                <p>Update cache size</p>
+                <Slider
+                    editable
+                    min={0}
+                    max={40}
+                    step={5}
+                    label="Cache size"
+                    onChange={changeCacheSize}
+                    value={webConfig.cacheSize}
+                    className={styles.config__slider}
+                />
+                <p>Initial cache size</p>
+                <Slider
+                    editable
+                    min={200}
+                    max={2000}
+                    step={100}
+                    label="Initial size"
+                    onChange={changeInitialSize}
+                    value={webConfig.initialSize}
+                    className={styles.config__slider}
+                />
             </div>
         );
+    }
+
+    getTableConfigTab = () => {
+        return <div className={styles.admin__tab}>{this.getTableConfigBlocks()}</div>;
     };
 
     getTabsConfig() {
@@ -105,7 +135,7 @@ class AdminPanel extends Tabs {
             },
             {
                 title: 'Table setup',
-                component: () => <span>Table or other setup here</span>,
+                component: this.getTableConfigTab,
             },
             {
                 title: 'Information',
@@ -115,6 +145,7 @@ class AdminPanel extends Tabs {
     }
 }
 
+AdminPanel = connect(getConfig('web-config', { as: 'webConfig' }))(AdminPanel);
 AdminPanel = connect(getConfig('drone-configuration.config', { as: 'config' }))(AdminPanel);
 
 export default AdminPanel;

@@ -97,5 +97,5 @@ def get_random_data():
 
 while True:
 
-    time.sleep(0.05)
+    # time.sleep(0.05)
     r.db('telemetry').table('data').insert(get_random_data()).run(conn)
