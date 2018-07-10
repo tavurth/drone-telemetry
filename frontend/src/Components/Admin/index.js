@@ -118,7 +118,7 @@ class AdminPanel extends Tabs {
             <Slider
                 editable
                 min={50}
-                max={2000}
+                max={5000}
                 step={100}
                 label="Initial size"
                 key="initial-data-size"
