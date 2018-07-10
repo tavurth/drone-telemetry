@@ -2,6 +2,8 @@ rethink_data
 */node_modules
 *.env
 db-config.txt
+.tern-port
+*.tar.gz
 
 # testing
 /coverage

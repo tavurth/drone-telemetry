@@ -39,7 +39,9 @@ function getInitialDataSet() {
         r
             .table('data')
             .group('type')
-            .orderBy('time')
+            .orderBy(r.desc('time'))
+            .limit(500)
+            .orderBy(r.asc('time'))
             .ungroup()
     );
 }

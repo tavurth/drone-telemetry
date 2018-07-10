@@ -15,7 +15,7 @@ export default function reducer(state = initialState, action = {}) {
             const { type } = newData;
 
             const currentData = state.get(type) || Immutable.List();
-            return state.set(type, currentData.concat(newData));
+            return state.set(type, currentData.concat(newData)).slice(-500);
     }
 
     return state;
