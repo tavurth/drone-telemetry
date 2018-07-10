@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+
 import ImmutableStateSelector, { changesSelector } from './immutable';
 
 const telemetrySelector = new ImmutableStateSelector('telemetry');
@@ -15,6 +16,7 @@ const telemetrySelector = new ImmutableStateSelector('telemetry');
 export function getTelemetry(key, options = {}) {
     options.as = options.as || key;
 
+    // Delay data reloads by some time
     // We'll load the selector here to memoize data
     return changesSelector(telemetrySelector.getSelector(key, Immutable.List), options);
 }

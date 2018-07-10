@@ -20,45 +20,82 @@ conn = r.connect(user='admin', password=password, host='localhost')
 def get_value(min, max):
     return round(random.uniform(min,max), 2)
 
-last_temperature = 0
-def temperature(time):
-    global last_temperature
-    last_temperature += get_value(-1, 1) / 10
-    return {
-        "time": time,
-        "type": 'temperature',
-        "value": last_temperature,
-    }
+def get_random_data():
+    return [
+        {
+            "name": "Bin 2",
+            "sampleName": "sample_10",
+            "type": "bin",
+            "time": time.time(),
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "Checksum",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "checksum",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "Bin7 MToF",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "mtof",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "PM1",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "pm1",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "PM10",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "pm10",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "PM2.5",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "pm2.5",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "Pressure",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "pressure",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "Sampling Period",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "sampling_period",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "SFR",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "sfr",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        },
+        {
+            "name": "Temperature",
+            "sampleName": "sample_10",
+            "time": time.time(),
+            "type": "temperature",
+            "value": get_value(get_value(0, 10), get_value(0, 100))
+        }
+    ];
 
-last_humidity = 0
-def humidity(time):
-    global last_humidity
-    last_humidity += get_value(-1, 1) / 10
-    return {
-        "time": time,
-        "type": 'humidity',
-        "value": last_humidity,
-    }
-
-last_windspeed = 0
-def windspeed(time):
-    global last_windspeed
-    last_windspeed += get_value(-1, 1) / 10
-    return {
-        "time": time,
-        "type": 'windspeed',
-        "value": last_windspeed,
-    }
-
-def random_data(index=0):
-    return random.choice([
-        temperature,
-        humidity,
-        windspeed
-    ])(timerFunc() * 1000)
 
 while True:
-    randomData = random_data()
-    print("Inserting", randomData)
-    r.db('data').table('drone_test_1').insert(randomData).run(conn)
-    time.sleep(0.1)
+
+    time.sleep(0.05)
+    r.db('telemetry').table('data').insert(get_random_data()).run(conn)

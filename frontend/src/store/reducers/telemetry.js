@@ -12,10 +12,10 @@ export default function reducer(state = initialState, action = {}) {
             return Immutable.fromJS(newData);
 
         case types.ADD_DATA:
-            const { type } = newData;
+            const { type, data } = newData;
 
             const currentData = state.get(type) || Immutable.List();
-            return state.set(type, currentData.concat(newData)).slice(-500);
+            return state.set(type, currentData.concat(data).slice(-500));
     }
 
     return state;
