@@ -22,10 +22,17 @@ def create_table(dbName, name):
         pass
 
 
+def create_index(dbName, tableName, indexName):
+    try:
+        return r.db(dbName).table(name).index_create(indexName).run(conn)
+    except Exception as e:
+        pass
+
 db = create_db('telemetry');
 create_table(db, 'data');
 create_table(db, 'users');
 create_table(db, 'config');
+create_index(db, 'data', 'time');
 
 ## Configuration for the administration page
 with open('./defaults/configs.json', 'r') as fin:
