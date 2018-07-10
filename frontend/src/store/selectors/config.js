@@ -1,7 +1,23 @@
+import get from 'lodash/get';
 import Immutable from 'immutable';
+
+import { getState } from 'store/store';
 import ImmutableStateSelector, { changesSelector } from './immutable';
 
 const configSelector = new ImmutableStateSelector('config');
+
+export const webConfigSelector = getConfig('web-config', { as: 'webConfig' });
+export function getWebConfig() {
+    return webConfigSelector(getState());
+}
+
+export function getDataBufferSize() {
+    return get(getWebConfig(), 'webConfig.cacheSize', 8);
+}
+
+export function getMaxBufferSize() {
+    return get(getWebConfig(), 'webConfig.initialSize', 500);
+}
 
 /**
  * Abstract function for getting data from Redux state

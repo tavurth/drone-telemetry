@@ -1,28 +1,15 @@
-import get from 'lodash/get';
-
 import types from 'store/types';
 import SocketWrapper from 'utils/SocketWrapper';
-import { dispatch, getState } from 'store/store';
+import { dispatch } from 'store/store';
 
 import { getConfig } from 'store/selectors';
+import { getDataBufferSize, getMaxBufferSize } from 'store/selectors/config';
+
 import { objectFromGroups } from './helpers';
 
+export function addDataSample(newData = {}) {}
+
 const dataBuffer = {};
-
-const webConfigSelector = getConfig('web-config', { as: 'webConfig' });
-
-function getWebConfig() {
-    return webConfigSelector(getState());
-}
-
-function getDataBufferSize() {
-    return get(getWebConfig(), 'webConfig.cacheSize', 8);
-}
-
-function getMaxBufferSize() {
-    return get(getWebConfig(), 'webConfig.initialSize', 500);
-}
-
 export function gotData(newData = {}) {
     const { type } = newData;
 
