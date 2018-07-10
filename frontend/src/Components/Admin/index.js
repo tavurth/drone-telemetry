@@ -89,38 +89,44 @@ class AdminPanel extends Tabs {
     }
 
     getControlsTab = () => {
-        const { config } = this.state;
-        return Object.keys(config).map(key => this.getConfigBlock(config, config[key], key));
+        return (
+            <div className={styles.admin__tab}>
+                {this.getConfigBlocks()}
+                <a onClick={this.sendConfig} className={styles.button__update}>
+                    Update drone settings
+                </a>
+            </div>
+        );
     };
 
     getTableConfigBlocks() {
         const { webConfig } = this.props;
-        return (
-            <div className={styles.admin__tab}>
-                <p>Update cache size</p>
-                <Slider
-                    editable
-                    min={0}
-                    max={40}
-                    step={5}
-                    label="Cache size"
-                    onChange={changeCacheSize}
-                    value={webConfig.cacheSize}
-                    className={styles.config__slider}
-                />
-                <p>Initial cache size</p>
-                <Slider
-                    editable
-                    min={200}
-                    max={2000}
-                    step={100}
-                    label="Initial size"
-                    onChange={changeInitialSize}
-                    value={webConfig.initialSize}
-                    className={styles.config__slider}
-                />
-            </div>
-        );
+        return [
+            <p key="update-cache-text">Update cache size</p>,
+            <Slider
+                editable
+                min={0}
+                max={40}
+                step={5}
+                label="Cache size"
+                key="rolling-cache-updates"
+                onChange={changeCacheSize}
+                value={webConfig.cacheSize}
+                className={styles.config__slider}
+            />,
+            <p key="initial-cache-text">Initial cache size</p>,
+            <Slider
+                editable
+                min={50}
+                max={2000}
+                step={100}
+                label="Initial size"
+                key="initial-data-size"
+                onChange={changeInitialSize}
+                value={webConfig.initialSize}
+                className={styles.config__slider}
+            />,
+        ];
     }
 
     getTableConfigTab = () => {

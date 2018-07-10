@@ -4,6 +4,7 @@
 .admin {
     &__tab {
         @include flex-center(column);
+        width: 80% !important;
     }
 }
 
